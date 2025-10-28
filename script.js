@@ -1,6 +1,8 @@
+// ==============================
+// NAVEGACIÓN DE PÁGINAS
+// ==============================
 let currentPage = 0;
-const totalPages = 7; // Las páginas van de 1 a 7 (total 7 páginas después de la portada)
-// Index 0: Portada, 1: page1, ..., 7: page7
+const totalPages = 7; // Total páginas después de la portada
 const pageNames = ['Portada', 'Our Moments', 'Things I Love', 'Our Month', 'Our Song', 'Mini Polaroids', 'A Letter for You', 'The End'];
 
 function startReading() {
@@ -11,19 +13,14 @@ function startReading() {
 }
 
 function showPage(pageNum) {
-    // Hide all pages (incluyendo la .page7)
-    document.querySelectorAll('.page, .page7').forEach(page => {
-        page.classList.remove('active');
-    });
+    document.querySelectorAll('.page, .page7').forEach(page => page.classList.remove('active'));
 
-    // Show current page
-    if (pageNum > 0 && pageNum <= 6) {
+    if (pageNum >= 1 && pageNum <= 6) {
         document.getElementById(`page${pageNum}`).classList.add('active');
     } else if (pageNum === 7) {
-         document.getElementById(`page7`).classList.add('active');
+        document.getElementById('page7').classList.add('active');
     }
 
-    // Update page indicator (usa pageNum como índice para pageNames)
     document.getElementById('pageIndicator').textContent = pageNames[pageNum];
 }
 
@@ -43,10 +40,8 @@ function previousPage() {
     } else if (currentPage === 1) {
         currentPage = 0;
         document.querySelector('.magazine-cover').style.display = 'flex';
-        document.querySelectorAll('.page, .page7').forEach(page => {
-            page.classList.remove('active');
-        });
-        document.getElementById('pageIndicator').textContent = pageNames[0]; // Indicador en 'Portada'
+        document.querySelectorAll('.page, .page7').forEach(page => page.classList.remove('active'));
+        document.getElementById('pageIndicator').textContent = pageNames[0];
         updateNavigation();
     }
 }
@@ -60,19 +55,18 @@ function updateNavigation() {
 
     if (currentPage === 0) {
         nextBtn.textContent = 'Empezar a leer →';
-        nextBtn.onclick = startReading;
     } else {
         nextBtn.textContent = currentPage === totalPages ? 'Fin ♡' : 'Siguiente →';
-        nextBtn.onclick = nextPage;
     }
 }
 
-// Generate calendar
+// ==============================
+// GENERAR CALENDARIO
+// ==============================
 function generateCalendar() {
     const calendar = document.getElementById('calendar');
     const daysInMonth = 31;
 
-    // Add day headers
     const dayHeaders = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
     dayHeaders.forEach(day => {
         const dayHeader = document.createElement('div');
@@ -84,8 +78,7 @@ function generateCalendar() {
         calendar.appendChild(dayHeader);
     });
 
-    // Añade días vacíos para que el día 1 caiga en Miércoles (como en Octubre)
-    const firstDayOfMonthWeekday = 3; 
+    const firstDayOfMonthWeekday = 3; // Día de inicio (ejemplo: miércoles)
     for (let i = 1; i < firstDayOfMonthWeekday; i++) {
         const emptyDay = document.createElement('div');
         emptyDay.className = 'calendar-day';
@@ -119,7 +112,7 @@ function generateCalendar() {
             this.innerHTML = this.textContent + '<br>♡';
             this.style.fontSize = '0.9rem';
 
-            // 💖 Animación tierna si el día es 30
+            // Animación tierna si es día 30
             if (parseInt(this.textContent) === 30) {
                 const heart = document.createElement('div');
                 heart.classList.add('cute-heart');
@@ -129,12 +122,13 @@ function generateCalendar() {
             }
         });
 
-        // Este append tiene que estar **afuera** del addEventListener
         calendar.appendChild(dayElement);
     }
 }
 
-// Add new love reason
+// ==============================
+// AGREGAR NUEVA RAZÓN DE AMOR
+// ==============================
 function addLoveReason() {
     const loveList = document.getElementById('loveList');
     const newItem = document.createElement('li');
@@ -152,47 +146,53 @@ function addLoveReason() {
     });
 }
 
-// Código para la sorpresa del video (AHORA SÍ ESTÁ AQUÍ)
+// ==============================
+// SORPRESA VIDEO
+// ==============================
 const sorpresaBtn = document.getElementById('sorpresaBtn');
 const rickVideo = document.getElementById('rickVideo');
 
 if (sorpresaBtn) {
     sorpresaBtn.addEventListener('click', () => {
-        // Ocultar la polaroid
         sorpresaBtn.style.display = 'none';
-        
-        // Mostrar el video y aplicar efecto zoom
         rickVideo.style.display = 'block';
         setTimeout(() => {
             rickVideo.style.transition = "transform 0.6s ease-out";
             rickVideo.style.transform = "scale(1)";
         }, 50);
 
-        // Forzar autoplay AQUI se agrega el parámetro autoplay
         rickVideo.src = "https://www.youtube.com/embed/PyoRdu-i0AQ?autoplay=1";
     });
 }
 
-
-// Initialize when page loads
+// ==============================
+// INICIALIZACIÓN AL CARGAR DOM
+// ==============================
 document.addEventListener('DOMContentLoaded', function() {
     generateCalendar();
     updateNavigation();
 
-    // Auto-resize textarea
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+
+    // Eventos fijos
+    nextBtn.addEventListener('click', () => {
+        if (currentPage === 0) startReading();
+        else nextPage();
+    });
+    prevBtn.addEventListener('click', previousPage);
+
+    // Auto-resize de textarea
     document.addEventListener('input', function(e) {
         if (e.target.classList.contains('letter-text')) {
             e.target.style.height = 'auto';
             e.target.style.height = e.target.scrollHeight + 'px';
         }
     });
-});
 
-// Keyboard navigation
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'ArrowRight' && currentPage < totalPages) {
-        nextPage();
-    } else if (e.key === 'ArrowLeft' && currentPage > 0) {
-        previousPage();
-    }
+    // Navegación con teclado
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowRight' && currentPage < totalPages) nextPage();
+        else if (e.key === 'ArrowLeft' && currentPage > 0) previousPage();
+    });
 });
