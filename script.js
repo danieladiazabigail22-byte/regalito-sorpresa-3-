@@ -99,7 +99,7 @@ function generateCalendar() {
         dayElement.className = 'calendar-day';
         dayElement.textContent = day;
 
-        // Make day 26 the anniversary day
+        // Marcar día 26 con ♡
         if (day === 26) {
             dayElement.classList.add('anniversary-day');
             dayElement.innerHTML = day + '<br>♡';
@@ -107,17 +107,26 @@ function generateCalendar() {
         }
 
         dayElement.addEventListener('click', function() {
-            // Remove previous anniversary day
+            // Quitar corazón anterior
             document.querySelectorAll('.anniversary-day').forEach(el => {
                 el.classList.remove('anniversary-day');
                 const dayNum = el.textContent.replace('♡', '').trim();
                 el.innerHTML = dayNum;
             });
 
-            // Set new anniversary day
+            // Agregar nuevo corazón
             this.classList.add('anniversary-day');
             this.innerHTML = day + '<br>♡';
             this.style.fontSize = '0.9rem';
+
+            // 💫 Si toca el día 30 → animación de correcto
+            if (day === 30) {
+                const check = document.createElement('div');
+                check.classList.add('success-check');
+                check.innerHTML = '✅';
+                document.body.appendChild(check);
+                setTimeout(() => check.remove(), 1500);
+            }
         });
 
         calendar.appendChild(dayElement);
