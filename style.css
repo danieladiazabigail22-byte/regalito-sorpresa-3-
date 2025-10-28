@@ -598,3 +598,77 @@ body {
         height: 200px; 
     }
 }
+/* ========================================================== */
+/* OPTIMIZACIÓN PARA PANTALLAS DE TELÉFONO */
+/* ========================================================== */
+
+/* Asegura que el body y el contenedor usen todo el alto del viewport real */
+html, body {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Ajusta el contenedor principal para que ocupe el ancho completo del dispositivo */
+.magazine-container {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Permite que las páginas se adapten al alto visible del dispositivo */
+.magazine-cover,
+.page,
+.page7 {
+    width: 100%;
+    height: 100vh; /* ocupa toda la altura de la pantalla */
+    max-height: 100dvh; /* usa el alto dinámico de pantallas móviles (mejor para iPhone y Android nuevos) */
+    border-radius: 0; /* elimina bordes redondeados que achican el espacio en pantallas pequeñas */
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Centra mejor el contenido en pantallas verticales */
+.cover-title {
+    font-size: clamp(1.8rem, 5vw, 3rem);
+}
+.cover-subtitle {
+    font-size: clamp(1rem, 4vw, 1.5rem);
+}
+.page-title {
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+}
+
+/* Los botones flotantes se ajustan al tamaño del teléfono */
+.nav-buttons {
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.nav-btn {
+    flex: 1;
+    min-width: 100px;
+    padding: 12px;
+}
+
+/* Evita que el contenido interno se corte en móviles */
+.page-content {
+    height: calc(100vh - 140px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Ajusta el fondo para que cubra toda la pantalla */
+body {
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
