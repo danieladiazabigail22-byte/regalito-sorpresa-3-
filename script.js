@@ -119,15 +119,14 @@ function generateCalendar() {
             this.innerHTML = day + '<br>♡';
             this.style.fontSize = '0.9rem';
 
-            // 💫 Si toca el día 30 → animación de correcto
-            if (day === 30) {
-                const check = document.createElement('div');
-                check.classList.add('success-check');
-                check.innerHTML = '✅';
-                document.body.appendChild(check);
-                setTimeout(() => check.remove(), 1500);
-            }
-        });
+           // 💫 Si toca el día 30 → animación tierna
+if (day === 30) {
+    const heart = document.createElement('div');
+    heart.classList.add('cute-heart');
+    heart.innerHTML = '💖';
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 1500);
+}
 
         calendar.appendChild(dayElement);
     }
