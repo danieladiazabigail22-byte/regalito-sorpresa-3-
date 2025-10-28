@@ -100,7 +100,7 @@ function generateCalendar() {
         dayElement.textContent = day;
 
         // Make day 26 the anniversary day
-        if (day === 1) {
+        if (day === 26) {
             dayElement.classList.add('anniversary-day');
             dayElement.innerHTML = day + '<br>♡';
             dayElement.style.fontSize = '0.9rem';
