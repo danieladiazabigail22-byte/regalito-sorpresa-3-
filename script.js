@@ -116,18 +116,20 @@ function generateCalendar() {
 
             // Agregar nuevo corazón
             this.classList.add('anniversary-day');
-            this.innerHTML = day + '<br>♡';
+            this.innerHTML = this.textContent + '<br>♡';
             this.style.fontSize = '0.9rem';
 
-           // 💫 Si toca el día 30 → animación tierna
-if (day === 30) {
-    const heart = document.createElement('div');
-    heart.classList.add('cute-heart');
-    heart.innerHTML = '💖';
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 1500);
-}
+            // 💖 Animación tierna si el día es 30
+            if (parseInt(this.textContent) === 30) {
+                const heart = document.createElement('div');
+                heart.classList.add('cute-heart');
+                heart.innerHTML = '💖';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 1500);
+            }
+        });
 
+        // Este append tiene que estar **afuera** del addEventListener
         calendar.appendChild(dayElement);
     }
 }
