@@ -1,6 +1,5 @@
 let currentPage = 0;
-const totalPages = 7; // Las páginas van de 1 a 7 (total 7 páginas después de la portada)
-// Index 0: Portada, 1: page1, ..., 7: page7
+const totalPages = 7;
 const pageNames = ['Portada', 'Our Moments', 'Things I Love', 'Our Month', 'Our Song', 'Mini Polaroids', 'A Letter for You', 'The End'];
 
 function startReading() {
@@ -11,19 +10,18 @@ function startReading() {
 }
 
 function showPage(pageNum) {
-    // Oculta todas las páginas
+    // 🔹 Oculta TODAS las páginas (importante para móvil)
     document.querySelectorAll('.page, .page7').forEach(page => {
-        page.classList.remove('active');
+        page.style.display = 'none';
     });
 
-    // Muestra la página actual
-    if (pageNum > 0 && pageNum <= 6) {
-        document.getElementById(`page${pageNum}`).classList.add('active');
-    } else if (pageNum === 7) {
-        document.getElementById('page7').classList.add('active');
+    // 🔹 Muestra SOLO la página actual
+    const current = document.getElementById(`page${pageNum}`);
+    if (current) {
+        current.style.display = 'flex';
     }
 
-    // Actualiza indicador
+    // 🔹 Actualiza el texto del indicador
     document.getElementById('pageIndicator').textContent = pageNames[pageNum];
 }
 
@@ -41,12 +39,13 @@ function previousPage() {
         showPage(currentPage);
         updateNavigation();
     } else if (currentPage === 1) {
+        // 🔹 Volver a la portada
         currentPage = 0;
         document.querySelector('.magazine-cover').style.display = 'flex';
         document.querySelectorAll('.page, .page7').forEach(page => {
-            page.classList.remove('active');
+            page.style.display = 'none';
         });
-        document.getElementById('pageIndicator').textContent = pageNames[0]; // Indicador en 'Portada'
+        document.getElementById('pageIndicator').textContent = pageNames[0];
         updateNavigation();
     }
 }
@@ -58,7 +57,6 @@ function updateNavigation() {
     prevBtn.disabled = currentPage === 0;
     nextBtn.disabled = currentPage === totalPages;
 
-    // Cambia texto según página
     if (currentPage === 0) {
         nextBtn.textContent = 'Empezar a leer →';
     } else {
@@ -66,12 +64,11 @@ function updateNavigation() {
     }
 }
 
-// Genera calendario
+// 💖 GENERADOR DE CALENDARIO
 function generateCalendar() {
     const calendar = document.getElementById('calendar');
     const daysInMonth = 31;
 
-    // Encabezados de día
     const dayHeaders = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
     dayHeaders.forEach(day => {
         const dayHeader = document.createElement('div');
@@ -83,8 +80,7 @@ function generateCalendar() {
         calendar.appendChild(dayHeader);
     });
 
-    // Días vacíos antes del 1
-    const firstDayOfMonthWeekday = 3; 
+    const firstDayOfMonthWeekday = 3;
     for (let i = 1; i < firstDayOfMonthWeekday; i++) {
         const emptyDay = document.createElement('div');
         emptyDay.className = 'calendar-day';
@@ -98,7 +94,6 @@ function generateCalendar() {
         dayElement.className = 'calendar-day';
         dayElement.textContent = day;
 
-        // Día 26 con corazón
         if (day === 26) {
             dayElement.classList.add('anniversary-day');
             dayElement.innerHTML = day + '<br>♡';
@@ -106,19 +101,16 @@ function generateCalendar() {
         }
 
         dayElement.addEventListener('click', function() {
-            // Quitar corazón anterior
             document.querySelectorAll('.anniversary-day').forEach(el => {
                 el.classList.remove('anniversary-day');
                 const dayNum = el.textContent.replace('♡', '').trim();
                 el.innerHTML = dayNum;
             });
 
-            // Agregar nuevo corazón
             this.classList.add('anniversary-day');
             this.innerHTML = this.textContent + '<br>♡';
             this.style.fontSize = '0.9rem';
 
-            // Animación tierna si día 30
             if (parseInt(this.textContent) === 30) {
                 const heart = document.createElement('div');
                 heart.classList.add('cute-heart');
@@ -132,7 +124,7 @@ function generateCalendar() {
     }
 }
 
-// Agregar razón de amor
+// 💌 Añadir razón de amor
 function addLoveReason() {
     const loveList = document.getElementById('loveList');
     const newItem = document.createElement('li');
@@ -150,7 +142,7 @@ function addLoveReason() {
     });
 }
 
-// Sorpresa del video
+// 🎥 Sorpresa del video
 const sorpresaBtn = document.getElementById('sorpresaBtn');
 const rickVideo = document.getElementById('rickVideo');
 
@@ -167,7 +159,7 @@ if (sorpresaBtn) {
     });
 }
 
-// Inicializar al cargar
+// 🪄 Inicializar
 document.addEventListener('DOMContentLoaded', function() {
     generateCalendar();
     updateNavigation();
@@ -180,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Botones de navegación fijos
+    // Botones
     const nextBtn = document.getElementById('nextBtn');
     const prevBtn = document.getElementById('prevBtn');
 
@@ -195,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
     prevBtn.addEventListener('click', previousPage);
 });
 
-// Navegación con teclado
+// ⌨️ Navegación con teclado
 document.addEventListener('keydown', function(e) {
     if (e.key === 'ArrowRight' && currentPage < totalPages) {
         nextPage();
