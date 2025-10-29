@@ -1,6 +1,15 @@
 let currentPage = 0;
 const totalPages = 7; // Portada = 0, luego 1–7
-const pageNames = ['Portada', 'Our Moments', 'Things I Love', 'Our Month', 'Our Song', 'Mini Polaroids', 'A Letter for You', 'The End'];
+const pageNames = [
+    'Portada',
+    'Our Moments',
+    'Things I Love',
+    'Our Month',
+    'Our Song',
+    'Mini Polaroids',
+    'A Letter for You',
+    'The End'
+];
 
 function startReading() {
     currentPage = 1;
@@ -9,34 +18,39 @@ function startReading() {
 }
 
 function showPage(pageNum) {
-    // Oculta TODO (incluyendo portada)
+    // Oculta todo
     document.querySelectorAll('.magazine-cover, .page, .page7').forEach(el => {
         el.style.display = 'none';
         el.classList.remove('active');
     });
 
-    // Muestra la página correspondiente
+    let pageToShow = null;
+
     if (pageNum === 0) {
-        document.querySelector('.magazine-cover').style.display = 'flex';
+        pageToShow = document.querySelector('.magazine-cover');
+        if (pageToShow) pageToShow.style.display = 'flex';
     } else if (pageNum > 0 && pageNum <= 6) {
-        const page = document.getElementById(`page${pageNum}`);
-        if (page) {
-            page.style.display = 'block';
-            page.classList.add('active');
-        }
+        pageToShow = document.getElementById(`page${pageNum}`);
     } else if (pageNum === 7) {
-        const page = document.getElementById('page7');
-        if (page) {
-            page.style.display = 'block';
-            page.classList.add('active');
-        }
+        pageToShow = document.getElementById('page7');
     }
 
-    // Actualiza el nombre del indicador
-    const indicator = document.getElementById('pageIndicator');
-    if (indicator) {
-        indicator.textContent = pageNames[pageNum];
+    if (pageToShow) {
+        pageToShow.style.display = 'block';
+        pageToShow.classList.add('active');
+
+        // 🩷 Forzar repintado (soluciona bug en celulares)
+        pageToShow.style.transform = 'scale(0.999)';
+        setTimeout(() => {
+            pageToShow.style.transform = 'scale(1)';
+        }, 50);
     }
+
+    const indicator = document.getElementById('pageIndicator');
+    if (indicator) indicator.textContent = pageNames[pageNum];
+
+    // 🩷 Scroll al tope
+    window.scrollTo(0, 0);
 }
 
 function nextPage() {
@@ -81,7 +95,7 @@ function generateCalendar() {
     const calendar = document.getElementById('calendar');
     if (!calendar) return;
 
-    calendar.innerHTML = ''; // limpia por si acaso
+    calendar.innerHTML = '';
     const daysInMonth = 31;
 
     const dayHeaders = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
@@ -95,7 +109,7 @@ function generateCalendar() {
         calendar.appendChild(header);
     });
 
-    const firstDayOfMonthWeekday = 3; 
+    const firstDayOfMonthWeekday = 3;
     for (let i = 1; i < firstDayOfMonthWeekday; i++) {
         const emptyDay = document.createElement('div');
         emptyDay.className = 'calendar-day';
@@ -122,7 +136,7 @@ function generateCalendar() {
             dayEl.classList.add('anniversary-day');
             dayEl.innerHTML = `${day}<br>♡`;
 
-            // Animación si día 30
+            // 💖 Animación tierna si día 30
             if (day === 30) {
                 const heart = document.createElement('div');
                 heart.classList.add('cute-heart');
